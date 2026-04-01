@@ -1,18 +1,19 @@
-import os
-print("Running file:", os.path.abspath(__file__))
+from flask import Flask , render_template 
 
-from flask import Flask #flask is a python web framework, importing its class
-from flask import render_template # this allows us to use html templates in our flask app
-
-# Initializing web server
 app = Flask(__name__) #an instance (my app) of the flask framework
 
-@app.route("/") # when in root dir, call this function
+@app.route("/") 
 def home():
-    return render_template("home.html") # render the home.html template
 
-if __name__== "__main__": # if currently running this file then run the server
-    print("Inside the main block - Starting Flask...") # This confirms the IF statement works
+    
+    
+    articles = [
+        {"title":"My First Blog Post", "date": "2026-04-01"},
+        {"title":"I have thunken more thoughts", "date": "2026-04-01"}
+    ]
+
+    
+    return render_template("home.html", articles=articles) 
+
+if __name__== "__main__":
     app.run(debug=True)
-else:
-    print("3. Failed! I am not being run as the main script.")
