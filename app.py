@@ -17,9 +17,22 @@ def home():
                  It makes sure that no matter what happens inside the sandwich (even if there is an error), the "cleanup" happens 
                  automatically at the end.'''
                 data = json.load(file)
+
+                data["id"] = filename.replace(".json", "") # remove the .json extension from the filename to get the article ID
+
                 articles.append(data)
 
     return render_template("home.html", articles=articles)
+
+
+@app.route("/article/<id>")
+def article(id):
+    filepath = os.path.join("articles", f"{id}.json")
+
+    with open(filepath, "r") as file:
+        data = json.load(file)
+
+    return render_template("article.html", article=data) 
 
 if __name__== "__main__":
     app.run(debug=True)
