@@ -1,19 +1,25 @@
 from flask import Flask , render_template 
+import json
+import os
 
 app = Flask(__name__) #an instance (my app) of the flask framework
 
-@app.route("/") 
+@app.route("/")
 def home():
+    articles = []
 
-    
-    
-    articles = [
-        {"title":"My First Blog Post", "date": "2026-04-01"},
-        {"title":"I have thunken more thoughts", "date": "2026-04-01"}
-    ]
+    for filename in os.listdir("articles"):  # list all files in the "articles" directory
+        if filename.endswith(".json"):
+            filepath = os.path.join("articles", filename) # create the full path to the file > articles/1.json
 
-    
-    return render_template("home.html", articles=articles) 
+            with open(filepath, "r") as file:
+                '''In Python, with and as are used together to create what is called a Context Manager. Think of it as a "Safety Sandwich."
+                 It makes sure that no matter what happens inside the sandwich (even if there is an error), the "cleanup" happens 
+                 automatically at the end.'''
+                data = json.load(file)
+                articles.append(data)
+
+    return render_template("home.html", articles=articles)
 
 if __name__== "__main__":
     app.run(debug=True)
